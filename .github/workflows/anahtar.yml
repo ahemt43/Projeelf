@@ -1,5 +1,5 @@
 name: APK Uretim Merkezi
-on: [push]
+on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -7,19 +7,20 @@ jobs:
       - name: Kodlari Getir
         uses: actions/checkout@v4
       
-      - name: Flutter Kur
+      - name: Flutter Motorunu Kur
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
-      - name: APK Bas
+      - name: APK Basimi (Kesin Cozum)
         run: |
-          flutter create . --force
-          cp main.dart lib/main.dart
+          flutter create --project-name=ahmet_rezistivite uygulama_klasoru
+          cp main.dart uygulama_klasoru/lib/main.dart
+          cd uygulama_klasoru
           flutter build apk --release
 
-      - name: APK'yi Teslim Et
+      - name: APK'yi Teslim Masasina Koy
         uses: actions/upload-artifact@v4
         with:
-          name: Ahmet-3D-Rezistivite-Dosyasi
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: Ahmet-3D-Rezistivite-APK
+          path: uygulama_klasoru/build/app/outputs/flutter-apk/app-release.apk
